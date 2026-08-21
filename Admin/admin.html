@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel – Shree Ganesh Provision Store</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="admin-shell" id="adminShell">
+
+    <aside class="sidebar">
+      <div class="side-logo">
+        <span class="side-logo-icon">🛒</span>
+        <div>
+          <div class="side-logo-main">Shree Ganesh</div>
+          <div class="side-logo-sub">Admin Panel</div>
+        </div>
+      </div>
+
+      <nav class="side-nav">
+        <button class="side-link active" data-view="dashboard">📊 <span>Dashboard</span></button>
+        <button class="side-link" data-view="products">📦 <span>Products</span></button>
+        <button class="side-link" data-view="stock">📈 <span>Stock Management</span></button>
+        <button class="side-link" data-view="customers">👥 <span>Customers</span></button>
+        <button class="side-link" data-view="suppliers">🚚 <span>Suppliers</span></button>
+        <button class="side-link" data-view="billing">🧾 <span>Billing</span></button>
+        <button class="side-link" data-view="sales">🕐 <span>Sales History</span></button>
+        <button class="side-link" data-view="expenses">💸 <span>Expenses</span></button>
+      </nav>
+
+      <button class="side-logout" id="logoutBtn">⎋ Logout</button>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <h2 id="viewTitle">Dashboard</h2>
+        <div class="topbar-user" id="topbarUser"></div>
+      </header>
+
+      <!-- ============ DASHBOARD VIEW ============ -->
+      <section class="view" id="view-dashboard">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-num" id="statTotalProducts">0</div>
+            <div class="stat-lbl">Total Products</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statStockValue">₹0</div>
+            <div class="stat-lbl">Total Stock Value</div>
+          </div>
+          <div class="stat-card stat-card-warn">
+            <div class="stat-num" id="statLowStock">0</div>
+            <div class="stat-lbl">Low Stock Items</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statCategories">0</div>
+            <div class="stat-lbl">Categories</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statTotalCustomers">0</div>
+            <div class="stat-lbl">Total Customers</div>
+          </div>
+          <div class="stat-card stat-card-warn">
+            <div class="stat-num" id="statTotalUdhaar">₹0</div>
+            <div class="stat-lbl">Outstanding Udhaar</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statTotalSuppliers">0</div>
+            <div class="stat-lbl">Total Suppliers</div>
+          </div>
+          <div class="stat-card stat-card-warn">
+            <div class="stat-num" id="statTotalPayable">₹0</div>
+            <div class="stat-lbl">Payable to Suppliers</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>⚠️ Low Stock Alerts</h3>
+          <div id="lowStockList" class="low-stock-list">
+            <p class="empty-msg">Loading...</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>💰 Business Summary</h3>
+          <div class="stat-grid stat-grid-3">
+            <div class="stat-card">
+              <div class="stat-num" id="statTotalSales">₹0</div>
+              <div class="stat-lbl">Total Sales Revenue</div>
+            </div>
+            <div class="stat-card stat-card-warn">
+              <div class="stat-num" id="statTotalExpenses">₹0</div>
+              <div class="stat-lbl">Total Expenses</div>
+            </div>
+            <div class="stat-card" id="profitCard">
+              <div class="stat-num" id="statProfit">₹0</div>
+              <div class="stat-lbl">Net Profit / Loss</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-muted">
+          <h3>Aane wale features</h3>
+          <div class="soon-grid">
+            <span>📊 Detailed Sales Reports</span>
+            <span>🔔 SMS/WhatsApp Alerts</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PRODUCTS VIEW ============ -->
+      <section class="view hidden" id="view-products">
+        <div class="view-toolbar">
+          <input type="text" id="productSearch" placeholder="Product dhundhe..." class="search-input" />
+          <button class="btn-admin btn-admin-gold" id="addProductBtn">+ Naya Product</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody">
+              <tr><td colspan="6" class="empty-msg">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ STOCK MANAGEMENT VIEW ============ -->
+      <section class="view hidden" id="view-stock">
+        <div class="stat-grid stat-grid-3">
+          <div class="stat-card">
+            <div class="stat-num" id="statStockIn">0</div>
+            <div class="stat-lbl">Total Stock In</div>
+          </div>
+          <div class="stat-card stat-card-warn">
+            <div class="stat-num" id="statStockOut">0</div>
+            <div class="stat-lbl">Total Stock Out</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statStockEntries">0</div>
+            <div class="stat-lbl">Total Entries</div>
+          </div>
+        </div>
+
+        <div class="view-toolbar">
+          <input type="text" id="stockSearch" placeholder="Product ya reason se dhundhe..." class="search-input" />
+          <button class="btn-admin btn-admin-gold" id="addStockBtn">+ Stock Entry</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Product</th>
+                <th>Type</th>
+                <th>Qty</th>
+                <th>Reason</th>
+                <th>Stock Baad Mein</th>
+              </tr>
+            </thead>
+            <tbody id="stockTableBody">
+              <tr><td colspan="6" class="empty-msg">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ CUSTOMER MANAGEMENT VIEW ============ -->
+      <section class="view hidden" id="view-customers">
+        <div class="view-toolbar">
+          <input type="text" id="customerSearch" placeholder="Naam ya phone se dhundhe..." class="search-input" />
+          <button class="btn-admin btn-admin-gold" id="addCustomerBtn">+ Naya Customer</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Naam</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Khata Balance</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="customersTableBody">
+              <tr><td colspan="5" class="empty-msg">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ SUPPLIER MANAGEMENT VIEW ============ -->
+      <section class="view hidden" id="view-suppliers">
+        <div class="view-toolbar">
+          <input type="text" id="supplierSearch" placeholder="Naam ya phone se dhundhe..." class="search-input" />
+          <button class="btn-admin btn-admin-gold" id="addSupplierBtn">+ Naya Supplier</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Naam</th>
+                <th>Phone</th>
+                <th>Items Supply Karta Hai</th>
+                <th>Payable</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="suppliersTableBody">
+              <tr><td colspan="5" class="empty-msg">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ BILLING VIEW ============ -->
+      <section class="view hidden" id="view-billing">
+        <div class="panel">
+          <h3>Naya Bill Banaye</h3>
+
+          <div class="form-row">
+            <label>Customer (optional)
+              <select id="billCustomer">
+                <option value="">Walk-in Customer</option>
+              </select>
+            </label>
+            <label>Payment Mode
+              <select id="billPaymentMode">
+                <option value="cash">Cash</option>
+                <option value="upi">UPI</option>
+                <option value="khata">Khata (udhaar)</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="view-toolbar" style="margin-top: 16px;">
+            <select id="billProductSelect" class="search-input" style="max-width: 280px;"></select>
+            <input type="number" id="billQty" min="1" step="1" value="1" placeholder="Qty" style="width: 90px; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--r-sm);" />
+            <button type="button" class="btn-admin btn-admin-ghost" id="addToCartBtn">+ Cart Mein Daalo</button>
+          </div>
+
+          <div class="table-wrap" style="margin-top: 16px;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Qty</th>
+                  <th>Line Total</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="cartTableBody">
+                <tr><td colspan="5" class="empty-msg">Cart khali hai — upar se product add karo.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="bill-totals">
+            <label>Discount (₹)
+              <input type="number" id="billDiscount" min="0" step="0.01" value="0" />
+            </label>
+            <div class="bill-total-line">Subtotal: <span id="billSubtotal">₹0</span></div>
+            <div class="bill-total-line bill-grand">Total: <span id="billGrandTotal">₹0</span></div>
+          </div>
+
+          <p class="auth-error" id="billError"></p>
+          <div class="modal-actions">
+            <button type="button" class="btn-admin btn-admin-ghost" id="clearCartBtn">Cart Khali Karo</button>
+            <button type="button" class="btn-admin btn-admin-gold" id="generateBillBtn">Bill Generate Karo</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SALES HISTORY VIEW ============ -->
+      <section class="view hidden" id="view-sales">
+        <div class="stat-grid stat-grid-3">
+          <div class="stat-card">
+            <div class="stat-num" id="statSalesTotal">₹0</div>
+            <div class="stat-lbl">Total Revenue</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statSalesCount">0</div>
+            <div class="stat-lbl">Total Bills</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statSalesAvg">₹0</div>
+            <div class="stat-lbl">Average Bill Value</div>
+          </div>
+        </div>
+
+        <div class="view-toolbar">
+          <input type="text" id="salesSearch" placeholder="Customer ya bill number se dhundhe..." class="search-input" />
+        </div>
+
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Bill #</th>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Payment</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="salesTableBody">
+              <tr><td colspan="7" class="empty-msg">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ EXPENSES VIEW ============ -->
+      <section class="view hidden" id="view-expenses">
+        <div class="stat-grid stat-grid-3">
+          <div class="stat-card stat-card-warn">
+            <div class="stat-num" id="statExpTotal">₹0</div>
+            <div class="stat-lbl">Total Expenses</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statExpMonth">₹0</div>
+            <div class="stat-lbl">Is Mahine Ke Expenses</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statExpCount">0</div>
+            <div class="stat-lbl">Total Entries</div>
+          </div>
+        </div>
+
+        <div class="view-toolbar">
+          <input type="text" id="expenseSearch" placeholder="Category ya note se dhundhe..." class="search-input" />
+          <button class="btn-admin btn-admin-gold" id="addExpenseBtn">+ Naya Expense</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Note</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="expensesTableBody">
+              <tr><td colspan="5" class="empty-msg">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===================== BILL VIEW MODAL ===================== -->
+  <div class="modal-overlay hidden" id="billViewModal">
+    <div class="modal-card modal-card-lg">
+      <h3>Bill #<span id="viewBillNumber"></span></h3>
+      <div id="viewBillDetails"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-admin btn-admin-ghost" id="closeBillViewBtn">Band Karo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== EXPENSE MODAL ===================== -->
+  <div class="modal-overlay hidden" id="expenseModal">
+    <div class="modal-card">
+      <h3 id="expenseModalTitle">Naya Expense</h3>
+      <form id="expenseForm">
+        <label>Category
+          <select id="exCategory" required>
+            <option value="Rent">Rent</option>
+            <option value="Electricity">Electricity</option>
+            <option value="Salary">Salary</option>
+            <option value="Transport">Transport</option>
+            <option value="Maintenance">Maintenance</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+        <label>Amount (₹)
+          <input type="number" id="exAmount" required min="1" step="0.01" />
+        </label>
+        <label>Date
+          <input type="date" id="exDate" required />
+        </label>
+        <label>Note (optional)
+          <input type="text" id="exNote" placeholder="Koi khaas baat" />
+        </label>
+        <p class="auth-error" id="expenseError"></p>
+        <div class="modal-actions">
+          <button type="button" class="btn-admin btn-admin-ghost" id="cancelExpenseBtn">Cancel</button>
+          <button type="submit" class="btn-admin btn-admin-gold">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== SUPPLIER MODAL ===================== -->
+  <div class="modal-overlay hidden" id="supplierModal">
+    <div class="modal-card">
+      <h3 id="supplierModalTitle">Naya Supplier</h3>
+      <form id="supplierForm">
+        <label>Naam
+          <input type="text" id="supName" required placeholder="Supplier/dealer ka naam" />
+        </label>
+        <label>Phone
+          <input type="tel" id="supPhone" required placeholder="10-digit mobile number" />
+        </label>
+        <label>Items Supply Karta Hai (optional)
+          <input type="text" id="supItems" placeholder="e.g. Atta, chawal, dal" />
+        </label>
+        <label>Note (optional)
+          <input type="text" id="supNote" placeholder="Koi khaas baat" />
+        </label>
+        <p class="auth-error" id="supplierError"></p>
+        <div class="modal-actions">
+          <button type="button" class="btn-admin btn-admin-ghost" id="cancelSupplierBtn">Cancel</button>
+          <button type="submit" class="btn-admin btn-admin-gold">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== SUPPLIER PAYMENT MODAL ===================== -->
+  <div class="modal-overlay hidden" id="supplierPayModal">
+    <div class="modal-card">
+      <h3>Supplier Entry — <span id="supPayName"></span></h3>
+      <form id="supplierPayForm">
+        <input type="hidden" id="spSupplierId" />
+        <label>Type
+          <select id="spType" required>
+            <option value="purchase">Udhaar pe maal liya (payable badhega)</option>
+            <option value="payment">Payment kiya (payable ghategga)</option>
+          </select>
+        </label>
+        <label>Amount (₹)
+          <input type="number" id="spAmount" required min="1" step="0.01" />
+        </label>
+        <label>Note (optional)
+          <input type="text" id="spNote" placeholder="e.g. Bill no., cash/UPI" />
+        </label>
+        <p class="auth-error" id="supplierPayError"></p>
+        <div class="modal-actions">
+          <button type="button" class="btn-admin btn-admin-ghost" id="cancelSupplierPayBtn">Cancel</button>
+          <button type="submit" class="btn-admin btn-admin-gold">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== CUSTOMER MODAL ===================== -->
+  <div class="modal-overlay hidden" id="customerModal">
+    <div class="modal-card">
+      <h3 id="customerModalTitle">Naya Customer</h3>
+      <form id="customerForm">
+        <label>Naam
+          <input type="text" id="cName" required placeholder="Customer ka naam" />
+        </label>
+        <label>Phone
+          <input type="tel" id="cPhone" required placeholder="10-digit mobile number" />
+        </label>
+        <label>Address (optional)
+          <input type="text" id="cAddress" placeholder="Ghar/dukaan ka pata" />
+        </label>
+        <label>Note (optional)
+          <input type="text" id="cNote" placeholder="Koi khaas baat" />
+        </label>
+        <p class="auth-error" id="customerError"></p>
+        <div class="modal-actions">
+          <button type="button" class="btn-admin btn-admin-ghost" id="cancelCustomerBtn">Cancel</button>
+          <button type="submit" class="btn-admin btn-admin-gold">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== KHATA ENTRY MODAL ===================== -->
+  <div class="modal-overlay hidden" id="khataModal">
+    <div class="modal-card">
+      <h3>Khata Entry — <span id="khataCustomerName"></span></h3>
+      <form id="khataForm">
+        <input type="hidden" id="khCustomerId" />
+        <label>Type
+          <select id="khType" required>
+            <option value="credit">Udhaar diya (customer ka balance badhega)</option>
+            <option value="payment">Payment mila (customer ka balance ghategga)</option>
+          </select>
+        </label>
+        <label>Amount (₹)
+          <input type="number" id="khAmount" required min="1" step="0.01" />
+        </label>
+        <label>Note (optional)
+          <input type="text" id="khNote" placeholder="e.g. Diwali stock, cash mila" />
+        </label>
+        <p class="auth-error" id="khataError"></p>
+        <div class="modal-actions">
+          <button type="button" class="btn-admin btn-admin-ghost" id="cancelKhataBtn">Cancel</button>
+          <button type="submit" class="btn-admin btn-admin-gold">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== STOCK ENTRY MODAL ===================== -->
+  <div class="modal-overlay hidden" id="stockModal">
+    <div class="modal-card">
+      <h3>Stock Entry</h3>
+      <form id="stockForm">
+        <label>Product
+          <select id="sProduct" required></select>
+        </label>
+        <div class="form-row">
+          <label>Type
+            <select id="sType" required>
+              <option value="in">Stock In (aaya)</option>
+              <option value="out">Stock Out (gaya)</option>
+            </select>
+          </label>
+          <label>Quantity
+            <input type="number" id="sQty" required min="1" step="1" />
+          </label>
+        </div>
+        <label>Reason
+          <select id="sReason" required>
+            <option value="Purchase / Restock">Purchase / Restock</option>
+            <option value="Sale">Sale</option>
+            <option value="Damage / Wastage">Damage / Wastage</option>
+            <option value="Return">Return</option>
+            <option value="Correction">Correction</option>
+          </select>
+        </label>
+        <label>Note (optional)
+          <input type="text" id="sNote" placeholder="e.g. Supplier ka naam, bill no." />
+        </label>
+        <p class="auth-error" id="stockError"></p>
+        <div class="modal-actions">
+          <button type="button" class="btn-admin btn-admin-ghost" id="cancelStockBtn">Cancel</button>
+          <button type="submit" class="btn-admin btn-admin-gold">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== PRODUCT MODAL ===================== -->
+  <div class="modal-overlay hidden" id="productModal">
+    <div class="modal-card">
+      <h3 id="modalTitle">Naya Product</h3>
+      <form id="productForm">
+        <label>Product Naam
+          <input type="text" id="pName" required placeholder="e.g. Tata Salt 1kg" />
+        </label>
+        <label>Category
+          <input type="text" id="pCategory" required placeholder="e.g. Grocery" />
+        </label>
+        <div class="form-row">
+          <label>Price (₹)
+            <input type="number" id="pPrice" required min="0" step="0.01" />
+          </label>
+          <label>Unit
+            <input type="text" id="pUnit" required placeholder="kg / pcs / packet" />
+          </label>
+        </div>
+        <div class="form-row">
+          <label>Stock Quantity
+            <input type="number" id="pStock" required min="0" step="1" />
+          </label>
+          <label>Low Stock Alert
+            <input type="number" id="pThreshold" required min="0" step="1" value="5" />
+          </label>
+        </div>
+        <p class="auth-error" id="productError"></p>
+        <div class="modal-actions">
+          <button type="button" class="btn-admin btn-admin-ghost" id="cancelProductBtn">Cancel</button>
+          <button type="submit" class="btn-admin btn-admin-gold">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

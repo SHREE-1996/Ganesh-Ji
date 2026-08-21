@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Signup – Shree Ganesh Provision Store</title>
+  <link rel="stylesheet" href="login.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="auth-card">
+    <div class="auth-logo">🛒</div>
+    <h1 class="auth-title">Shree Ganesh<span>Admin Panel</span></h1>
+    <p class="auth-subtitle">Naya admin account banaye</p>
+
+    <form id="signupForm" class="auth-form">
+      <label>Naam
+        <input type="text" id="signupName" required placeholder="Aapka naam" />
+      </label>
+      <label>Email
+        <input type="email" id="signupEmail" required placeholder="admin@shreeganesh.com" autocomplete="username" />
+      </label>
+      <label>Password (min. 6 characters)
+        <input type="password" id="signupPassword" required minlength="6" placeholder="••••••••" autocomplete="new-password" />
+      </label>
+      <p class="auth-error" id="signupError"></p>
+      <button type="submit" class="btn-admin btn-admin-gold btn-block">Account Banaye</button>
+    </form>
+
+    <button class="auth-toggle" onclick="window.location.href='login.html'">← Login pe wapas jaaye</button>
+  </div>
+
+  <script type="module" src="login.js"></script>
+</body>
+</html>

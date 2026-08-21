@@ -1,0 +1,185 @@
+/* =========================================
+   SHREE GANESH PROVISION STORE — LOGIN/SIGNUP
+   ========================================= */
+
+:root {
+  --green-dark:   #0a2e12;
+  --green-main:   #1b5e20;
+  --green-mid:    #2e7d32;
+  --green-light:  #4caf50;
+  --green-pale:   #e8f5e9;
+  --gold:         #c8a84b;
+  --gold-light:   #f7e9c0;
+  --gold-dark:    #8a6f1e;
+  --white:        #ffffff;
+  --off:          #f9f8f4;
+  --ink:          #111e0e;
+  --ink-mid:      #2d4a2a;
+  --ink-light:    #6b8a66;
+  --border:       #dde8d5;
+  --danger:       #b3261e;
+  --danger-pale:  #fdecea;
+  --shadow-sm:    0 2px 16px rgba(0,0,0,0.06);
+  --shadow-md:    0 8px 40px rgba(0,0,0,0.10);
+  --shadow-lg:    0 20px 60px rgba(0,0,0,0.18);
+  --r:            14px;
+  --r-sm:         8px;
+  --r-lg:         24px;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --ease:         cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(200,168,75,0.10), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(46,125,50,0.14), transparent 45%),
+    var(--green-dark);
+}
+
+.hidden { display: none !important; }
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--white);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 44px 36px 36px;
+  border-top: 4px solid var(--gold);
+}
+
+.auth-logo {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--green-pale);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  margin: 0 auto 18px;
+}
+
+.auth-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--green-dark);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.auth-title span {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  margin-top: 6px;
+}
+
+.auth-subtitle {
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--ink-light);
+  margin: 6px 0 26px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.auth-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-mid);
+}
+
+.auth-form input {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--off);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+}
+.auth-form input:focus {
+  border-color: var(--gold);
+  background: var(--white);
+}
+
+.auth-error {
+  font-size: 13px;
+  color: var(--danger);
+  min-height: 16px;
+}
+.auth-hint {
+  font-size: 12.5px;
+  color: var(--ink-light);
+  margin-top: -6px;
+}
+
+.btn-admin {
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--r-sm);
+  padding: 13px 20px;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease), box-shadow 0.15s var(--ease), opacity 0.15s var(--ease);
+}
+.btn-admin-gold {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  color: var(--white);
+  box-shadow: 0 6px 20px rgba(200,168,75,0.35);
+}
+.btn-admin-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(200,168,75,0.45); }
+.btn-block { width: 100%; margin-top: 4px; }
+
+.auth-toggle {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: none;
+  border: none;
+  color: var(--green-main);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  padding: 6px;
+}
+.auth-toggle:hover { text-decoration: underline; }
+
+.auth-back {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--ink-light);
+  text-decoration: none;
+}
+.auth-back:hover { color: var(--green-main); }
+
+@media (max-width: 480px) {
+  .auth-card { padding: 34px 24px 28px; }
+}
